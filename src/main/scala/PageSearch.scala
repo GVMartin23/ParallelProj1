@@ -9,6 +9,7 @@ object PageSearch {
      */
     def count(pages: List[RankedWebPage], query: List[String]): List[Double] = {
         List() // TODO: implement this method and remove this stub
+        pages.map(p => query.foldLeft(0)(/** get number of occurences of this string within p.text*/))
     }
 
     /**

@@ -9,8 +9,15 @@ object PageSearch {
      */
     def count(pages: List[RankedWebPage], query: List[String]): List[Double] = {
         List() // TODO: implement this method and remove this stub
-        pages.map(p => query.foldLeft(0)(/** get number of occurences of this string within p.text*/))
+        pages.map(p =>
+            numInPage(p, query)
+            )
     }
+
+    def numInPage(p: RankedWebPage, query: List[String]): Double = query match
+        case Nil => 0.0
+        case h::tail => (if p.text.contains(h) then 1.0 else 0.0) + numInPage(p, tail)
+
 
     /**
      * @param pages a list of RankedWebPage objects to be searched

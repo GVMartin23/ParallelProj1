@@ -19,7 +19,7 @@ object PageSearch {
    * tail recursive counting for number of times any word in the query appears in the page
    * @param p the current page
    * @param query list of words that were queried
-   * @param countSoFar count of appearances
+   * @param occurrences count of appearances
    * @return
    */
     @tailrec
@@ -41,7 +41,15 @@ object PageSearch {
      * @return      a list of the term-frequency of the occurrences of those terms in each page in the same order given
      */
     def tf(pages: List[RankedWebPage], query: List[String]): List[Double] = {
-        List() // TODO: implement this method and remove this stub
+        pages.map(termFrequencyMulti(_, query))
+    }
+
+    private def termFrequencyMulti(page: RankedWebPage, query: List[String]): Double = {
+      query.foldLeft(0.0)((lastNum, str) => lastNum + termFrequencySingle(page.text, str))
+    }
+
+    private def termFrequencySingle(text: String, query: String): Double = {
+      numInPage(text, query) / text.split(' ').length
     }
 
     /**
@@ -50,6 +58,18 @@ object PageSearch {
      * @return      a list of the TF-IDF score for each page in the same order given
      */
     def tfidf(pages: List[RankedWebPage], query: List[String]): List[Double] = {
-        List() // TODO: implement this method and remove this stub
+      pages.map(tfidfMulti(_, query, pages))
+    }
+
+    private def tfidfMulti(page: RankedWebPage, query: List[String], pages: List[RankedWebPage]): Double = {
+      query.foldLeft(0.0)(_ + tfidfSingle(page.text, _, pages))
+    }
+
+    private def tfidfSingle(text: String, query: String, pages: List[RankedWebPage]): Double = {
+      termFrequencySingle(text, query) * log(pages.length/(numContains(pages, query) + 1))
+    }
+    
+    private def numContains(pages: List[RankedWebPage], query: String): Int = {
+      pages.count(_.text.contains(query))
     }
 }

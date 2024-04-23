@@ -16,7 +16,7 @@ import scala.util.Sorting
         val pages: Map[String, WebPage] = mapWebPages(loadWebPages()) // completed for you
 
         //TODO: Can change which PageRank to use
-        val rankedPages: List[RankedWebPage] = PageRank.pagerank(pages).map((pageId, ranking) => RankedWebPage(pages(pageId), ranking)).toList // call PageRank.???? here
+        val rankedPages: List[RankedWebPage] = PageRank.indegree(pages).map((pageId, ranking) => RankedWebPage(pages(pageId), ranking)).toList // call PageRank.???? here
 
         // Get user input then perform search until ":quit" is entered
         var query: String = ""
@@ -30,7 +30,7 @@ import scala.util.Sorting
             terms != List(":quit")
         } do {
           //TODO: Can change which PageSearch to use
-          val searchedPages: List[SearchedWebPage] = rankedPages.zip(PageSearch.count(rankedPages, terms)).map((page, textmatch) => SearchedWebPage(page, textmatch)) // call PageSearch.???? here
+          val searchedPages: List[SearchedWebPage] = rankedPages.zip(PageSearch.tfidf(rankedPages, terms)).map((page, textmatch) => SearchedWebPage(page, textmatch)) // call PageSearch.???? here
           // normalize the ranges for weight and textmatch on these pages
           val pageArray = SearchedWebPageNormalize.normalize(searchedPages).toArray
           // sort this array based on the chosen averaging scheme i.e.

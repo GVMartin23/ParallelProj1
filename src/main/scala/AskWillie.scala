@@ -16,7 +16,7 @@ import scala.util.Sorting
         val pages: Map[String, WebPage] = mapWebPages(loadWebPages()) // completed for you
 
         //TODO: Can change which PageRank to use
-        val rankedPages: List[RankedWebPage] = PageRank.equal(pages).map((pageId, ranking) => RankedWebPage(pages(pageId), ranking)).toList // call PageRank.???? here
+        val rankedPages: List[RankedWebPage] = PageRank.pagerank(pages).map((pageId, ranking) => RankedWebPage(pages(pageId), ranking)).toList // call PageRank.???? here
 
         // Get user input then perform search until ":quit" is entered
         var query: String = ""

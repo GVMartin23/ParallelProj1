@@ -49,7 +49,7 @@ object PageSearch {
     }
 
     private def termFrequencySingle(text: String, query: String): Double = {
-      numInPage(text, query) / text.split(' ').length
+      numInPage(text, query) / text.length
     }
 
     /**
